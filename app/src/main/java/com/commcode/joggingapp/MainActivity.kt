@@ -2,6 +2,8 @@ package com.commcode.joggingapp
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +19,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.commcode.joggingapp.ui.theme.JoggingAppTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -33,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Jogging()
+                    Jogging(joggingUnit = JoggingUnit())
                 }
             }
         }
@@ -41,8 +48,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Jogging() {
-    var duration = 1
+fun Jogging(joggingUnit: JoggingUnit) {
+
+    var duration: Int by remember { mutableStateOf(joggingUnit.duration) }
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -77,10 +86,24 @@ fun Jogging() {
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "minutes", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = { }) {
+        Button(onClick = { startCountDown(duration) }) {
             Text(text = "Start", style = MaterialTheme.typography.headlineLarge)
         }
     }
+}
+
+fun startCountDown(duration: Int) {
+    val countDownTimer: CountDownTimer =
+        object : CountDownTimer((duration * 60 * 1000).toLong(), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                Log.d("Jogging", "onTick: ${millisUntilFinished / 1000} seconds")
+            }
+
+            override fun onFinish() {
+                Log.d("Jogging", "Finish")
+            }
+        }
+    countDownTimer.start()
 }
 
 @Preview(name = "Light Mode")
@@ -91,7 +114,7 @@ fun Jogging() {
 fun JoggingPreview() {
     JoggingAppTheme {
         Surface {
-            Jogging()
+            Jogging(JoggingUnit())
         }
     }
 }
