@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +40,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Jogging(joggingUnit = JoggingUnit())
+                    Jogging(
+                        joggingUnit = JoggingUnit()
+                    )
                 }
             }
         }
@@ -57,13 +59,13 @@ fun Jogging(joggingUnit: JoggingUnit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Jogging for", style = MaterialTheme.typography.headlineLarge)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         Row {
-            OutlinedButton(onClick = {
+            FilledTonalButton(onClick = {
                 if (duration > 1) {
                     duration--
                 }
-            }) {
+            }, shape = MaterialTheme.shapes.large) {
                 Text(
                     text = "-",
                     style = MaterialTheme.typography.headlineLarge
@@ -71,22 +73,24 @@ fun Jogging(joggingUnit: JoggingUnit) {
             }
             Text(
                 text = "$duration",
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp),
                 style = MaterialTheme.typography.headlineLarge
             )
-            OutlinedButton(onClick = {
-                duration++
-            }) {
+            FilledTonalButton(onClick = {
+                if (duration < 60) {
+                    duration++
+                }
+            }, shape = MaterialTheme.shapes.large) {
                 Text(
                     text = "+",
                     style = MaterialTheme.typography.headlineLarge
                 )
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "minutes", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = { startCountDown(duration) }) {
+        Text(text = "minutes", style = MaterialTheme.typography.headlineLarge)
+        Spacer(modifier = Modifier.height(32.dp))
+        Button(onClick = { startCountDown(1) }) {
             Text(text = "Start", style = MaterialTheme.typography.headlineLarge)
         }
     }
@@ -114,7 +118,7 @@ fun startCountDown(duration: Int) {
 fun JoggingPreview() {
     JoggingAppTheme {
         Surface {
-            Jogging(JoggingUnit())
+            Jogging(joggingUnit = JoggingUnit())
         }
     }
 }
