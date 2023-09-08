@@ -3,7 +3,6 @@ package com.commcode.joggingapp
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,22 +35,54 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JoggingAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Jogging(
-                        joggingUnit = JoggingUnit()
-                    )
-                }
+                MainScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }
 }
 
 @Composable
-fun Jogging(joggingUnit: JoggingUnit) {
+fun MainScreen(modifier: Modifier = Modifier) {
+
+    var shouldShowExerciseScreen by remember { mutableStateOf(true) }
+
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.background
+    ) {
+        if (shouldShowExerciseScreen) {
+            StartScreen(
+                onStartClicked = { shouldShowExerciseScreen = false },
+                joggingUnit = JoggingUnit(duration = 1),
+            )
+        } else {
+            ExerciseScreen(modifier = modifier, joggingUnit = JoggingUnit(duration = 1))
+        }
+    }
+}
+
+@Composable
+fun ExerciseScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
+
+    val duration: Int by rememberSaveable { mutableStateOf(joggingUnit.duration) }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Jogging for", style = MaterialTheme.typography.headlineLarge)
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = "$duration",
+            style = MaterialTheme.typography.headlineLarge
+        )
+    }
+}
+
+@Composable
+fun StartScreen(onStartClicked: () -> Unit, joggingUnit: JoggingUnit) {
 
     var duration: Int by remember { mutableStateOf(joggingUnit.duration) }
 
@@ -90,21 +122,20 @@ fun Jogging(joggingUnit: JoggingUnit) {
         Spacer(modifier = Modifier.height(24.dp))
         Text(text = "minutes", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(32.dp))
-        Button(onClick = { startCountDown(1) }) {
+        Button(onClick = onStartClicked) {
             Text(text = "Start", style = MaterialTheme.typography.headlineLarge)
         }
     }
 }
 
 fun startCountDown(duration: Int) {
+
     val countDownTimer: CountDownTimer =
         object : CountDownTimer((duration * 60 * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                Log.d("Jogging", "onTick: ${millisUntilFinished / 1000} seconds")
             }
 
             override fun onFinish() {
-                Log.d("Jogging", "Finish")
             }
         }
     countDownTimer.start()
@@ -118,7 +149,7 @@ fun startCountDown(duration: Int) {
 fun JoggingPreview() {
     JoggingAppTheme {
         Surface {
-            Jogging(joggingUnit = JoggingUnit())
+            StartScreen(onStartClicked = {}, joggingUnit = JoggingUnit())
         }
     }
 }
