@@ -19,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,16 +37,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JoggingAppTheme {
-                MainScreen(modifier = Modifier.fillMaxSize())
+                MainScreen(modifier = Modifier.fillMaxSize(), joggingUnit = JoggingUnit())
             }
         }
     }
 }
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
 
     var shouldShowExerciseScreen by remember { mutableStateOf(true) }
+    val duration: Int by rememberSaveable { mutableStateOf(joggingUnit.duration) }
 
     Surface(
         modifier = modifier,
@@ -54,10 +56,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
         if (shouldShowExerciseScreen) {
             StartScreen(
                 onStartClicked = { shouldShowExerciseScreen = false },
-                joggingUnit = JoggingUnit(duration = 1),
+                joggingUnit = JoggingUnit(duration = duration),
             )
         } else {
-            ExerciseScreen(modifier = modifier, joggingUnit = JoggingUnit(duration = 1))
+            ExerciseScreen(modifier = modifier, joggingUnit = JoggingUnit(duration = duration))
         }
     }
 }
@@ -73,23 +75,7 @@ fun ExerciseScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
         mutableStateOf(durationInMillis)
     }
 
-    val countDownTimer =
-        object : CountDownTimer(durationInMillis.toLong(), 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                countDown.value = millisUntilFinished.toInt()
-            }
-
-            override fun onFinish() {
-
-            }
-        }
-
-    DisposableEffect(key1 = "key") {
-        countDownTimer.start()
-        onDispose {
-            countDownTimer.cancel()
-        }
-    }
+    StartCountDownTimer(durationInMillis, countDown)
 
     Column(
         modifier = modifier,
@@ -112,6 +98,30 @@ fun ExerciseScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
 //            text = "$countDownTimer",
             style = MaterialTheme.typography.headlineLarge
         )
+    }
+}
+
+@Composable
+fun StartCountDownTimer(
+    durationInMillis: Int,
+    countDown: MutableState<Int>,
+) {
+    val countDownTimer =
+        object : CountDownTimer(durationInMillis.toLong(), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                countDown.value = millisUntilFinished.toInt()
+            }
+
+            override fun onFinish() {
+
+            }
+        }
+
+    DisposableEffect(key1 = "key") {
+        countDownTimer.start()
+        onDispose {
+            countDownTimer.cancel()
+        }
     }
 }
 
