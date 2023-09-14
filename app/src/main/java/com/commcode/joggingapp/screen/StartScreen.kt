@@ -11,21 +11,14 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StartScreen(onStartClicked: () -> Unit, duration: Int) {
-
-    var duration: Int by remember {
-        mutableStateOf(duration)
-    }
+fun StartScreen(onStartClicked: () -> Unit, duration: MutableState<Int>) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -39,8 +32,8 @@ fun StartScreen(onStartClicked: () -> Unit, duration: Int) {
         Spacer(modifier = Modifier.height(24.dp))
         Row {
             FilledTonalButton(onClick = {
-                if (duration > 1) {
-                    duration--
+                if (duration.value > 1) {
+                    duration.value--
                 }
             }, shape = MaterialTheme.shapes.large) {
                 Text(
@@ -49,13 +42,13 @@ fun StartScreen(onStartClicked: () -> Unit, duration: Int) {
                 )
             }
             Text(
-                text = "$duration",
+                text = "${duration.value}",
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp),
                 style = MaterialTheme.typography.headlineLarge
             )
             FilledTonalButton(onClick = {
-                if (duration < 60) {
-                    duration++
+                if (duration.value < 60) {
+                    duration.value++
                 }
             }, shape = MaterialTheme.shapes.large) {
                 Text(

@@ -3,6 +3,7 @@ package com.commcode.joggingapp.screen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -14,7 +15,7 @@ import com.commcode.joggingapp.JoggingUnit
 fun MainScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
 
     var shouldShowExerciseScreen by rememberSaveable { mutableStateOf(true) }
-    val duration: Int by rememberSaveable { mutableStateOf(joggingUnit.duration) }
+    val duration: MutableState<Int> = rememberSaveable { mutableStateOf(joggingUnit.duration) }
 
     Surface(
         modifier = modifier,

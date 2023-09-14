@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -19,13 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ExerciseScreen(modifier: Modifier = Modifier, duration: Int) {
+fun ExerciseScreen(modifier: Modifier = Modifier, duration: MutableState<Int>) {
 
-    val duration: Int by remember {
-        mutableStateOf(duration)
-    }
-
-    val durationInMillis: Int = duration * 60 * 1000
+    val durationInMillis: Int = duration.value * 60 * 1000
 
     val countDown = remember {
         mutableStateOf(durationInMillis)
