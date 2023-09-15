@@ -1,5 +1,7 @@
 package com.commcode.joggingapp
 
 data class JoggingUnit(
-    val duration: Int,
+    val walking: Int,
+    val jogging: Int,
+    val pause: Int,
 )

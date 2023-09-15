@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun StartScreen(onStartClicked: () -> Unit, duration: MutableState<Int>) {
+fun StartScreen(onStartClicked: () -> Unit, jogging: MutableState<Int>) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -32,8 +32,8 @@ fun StartScreen(onStartClicked: () -> Unit, duration: MutableState<Int>) {
         Spacer(modifier = Modifier.height(24.dp))
         Row {
             FilledTonalButton(onClick = {
-                if (duration.value > 1) {
-                    duration.value--
+                if (jogging.value > 5) {
+                    jogging.value--
                 }
             }, shape = MaterialTheme.shapes.large) {
                 Text(
@@ -42,13 +42,13 @@ fun StartScreen(onStartClicked: () -> Unit, duration: MutableState<Int>) {
                 )
             }
             Text(
-                text = "${duration.value}",
+                text = "${jogging.value}",
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp),
                 style = MaterialTheme.typography.headlineLarge
             )
             FilledTonalButton(onClick = {
-                if (duration.value < 60) {
-                    duration.value++
+                if (jogging.value < 60) {
+                    jogging.value++
                 }
             }, shape = MaterialTheme.shapes.large) {
                 Text(

@@ -15,7 +15,13 @@ import com.commcode.joggingapp.JoggingUnit
 fun MainScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
 
     var shouldShowExerciseScreen by rememberSaveable { mutableStateOf(true) }
-    val duration: MutableState<Int> = rememberSaveable { mutableStateOf(joggingUnit.duration) }
+    val walking: MutableState<Int> = rememberSaveable {
+        mutableStateOf(joggingUnit.walking)
+    }
+    val jogging: MutableState<Int> = rememberSaveable { mutableStateOf(joggingUnit.jogging) }
+    val pause: MutableState<Int> = rememberSaveable {
+        mutableStateOf(joggingUnit.pause)
+    }
 
     Surface(
         modifier = modifier,
@@ -24,10 +30,10 @@ fun MainScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
         if (shouldShowExerciseScreen) {
             StartScreen(
                 onStartClicked = { shouldShowExerciseScreen = false },
-                duration = duration,
+                jogging = jogging
             )
         } else {
-            ExerciseScreen(modifier = modifier, duration = duration)
+            ExerciseScreen(modifier = modifier, walking = walking, jogging = jogging, pause = pause)
         }
     }
 }

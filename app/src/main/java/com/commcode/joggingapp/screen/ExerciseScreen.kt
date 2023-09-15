@@ -18,15 +18,135 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ExerciseScreen(modifier: Modifier = Modifier, duration: MutableState<Int>) {
+fun ExerciseScreen(
+    modifier: Modifier = Modifier,
+    walking: MutableState<Int>,
+    jogging: MutableState<Int>,
+    pause: MutableState<Int>,
+) {
 
-    val durationInMillis: Int = duration.value * 60 * 1000
+    val walkingDurationInMillis = getDurationInMillis(walking)
+    val joggingDurationInMillis = getDurationInMillis(jogging)
+    val pauseDurationInMillis = getDurationInMillis(pause)
 
-    val countDown = remember {
-        mutableStateOf(durationInMillis)
+    val walkingCountDown = remember {
+        mutableStateOf(walkingDurationInMillis)
+    }
+    val joggingCountDown = remember {
+        mutableStateOf(joggingDurationInMillis)
+    }
+    val pauseCountDown = remember {
+        mutableStateOf(pauseDurationInMillis)
     }
 
-    StartCountDownTimer(durationInMillis, countDown)
+//    val durationInMillis: Int = getDurationInMillis()
+
+//    val countDown = remember {
+//        mutableStateOf(durationInMillis)
+//    }
+
+    val countDown = if (jogging.value > 30) {
+        StartCountDownTimer(
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
+        )
+        // start
+        StartCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.2).toInt(),
+            countDown = joggingCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = pauseDurationInMillis,
+            countDown = pauseCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.5).toInt(),
+            countDown = joggingCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = (pauseDurationInMillis * 2),
+            countDown = pauseCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.3).toInt(),
+            countDown = joggingCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = pauseDurationInMillis,
+            countDown = pauseCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
+        )
+    } else if (jogging.value > 10) {
+        StartCountDownTimer(
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
+        )
+        // start
+        StartCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.2).toInt(),
+            countDown = joggingCountDown
+        )
+        // peep
+        StartCountDownTimer(durationInMillis = pauseDurationInMillis, countDown = pauseCountDown)
+        // peep
+        StartCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.5).toInt(),
+            countDown = joggingCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = (pauseDurationInMillis * 2),
+            countDown = pauseCountDown
+        )
+        // peep
+        StartCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.3).toInt(),
+            countDown = joggingCountDown
+        )
+        // peep
+        StartCountDownTimer(durationInMillis = pauseDurationInMillis, countDown = pauseCountDown)
+        // peep
+        StartCountDownTimer(
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
+        )
+        // finish
+    } else {
+        StartCountDownTimer(
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
+        )
+        // start
+        repeat(5) {
+            StartCountDownTimer(
+                durationInMillis = (joggingDurationInMillis * 0.2).toInt(),
+                countDown = joggingCountDown
+            )
+
+            // peep
+            StartCountDownTimer(
+                durationInMillis = pauseDurationInMillis,
+                countDown = pauseCountDown
+            )
+            // peep
+        }
+        StartCountDownTimer(
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
+        )
+        // finish
+    }
+
+//    StartCountDownTimer(durationInMillis, countDown)
 
     Column(
         modifier = modifier,
@@ -56,11 +176,15 @@ fun ExerciseScreen(modifier: Modifier = Modifier, duration: MutableState<Int>) {
     }
 }
 
+private fun getDurationInMillis(duration: MutableState<Int>): Int {
+    return duration.value * 60 * 1000
+}
+
 @Composable
 private fun StartCountDownTimer(
     durationInMillis: Int,
     countDown: MutableState<Int>,
-) {
+): MutableState<Int> {
     val countDownTimer =
         object : CountDownTimer(durationInMillis.toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -78,4 +202,5 @@ private fun StartCountDownTimer(
             countDownTimer.cancel()
         }
     }
+    return countDown
 }

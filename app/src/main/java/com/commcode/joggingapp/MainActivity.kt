@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JoggingAppTheme {
-                MainScreen(modifier = Modifier.fillMaxSize(), joggingUnit = JoggingUnit(1))
+                MainScreen(modifier = Modifier.fillMaxSize(), joggingUnit = JoggingUnit(3, 5, 1))
             }
         }
     }
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 fun JoggingPreview() {
     JoggingAppTheme {
         Surface {
-            MainScreen(joggingUnit = JoggingUnit(1))
+            MainScreen(joggingUnit = JoggingUnit(3, 5, 1))
         }
     }
 }
