@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 @Composable
 fun ExerciseScreen(
@@ -24,7 +25,6 @@ fun ExerciseScreen(
     jogging: MutableState<Int>,
     pause: MutableState<Int>,
 ) {
-
     val walkingDurationInMillis = getDurationInMillis(walking)
     val joggingDurationInMillis = getDurationInMillis(jogging)
     val pauseDurationInMillis = getDurationInMillis(pause)
@@ -45,101 +45,122 @@ fun ExerciseScreen(
 //        mutableStateOf(durationInMillis)
 //    }
 
+    var text: String
     val countDown = if (jogging.value > 30) {
-        StartCountDownTimer(
+        text = "Walking for"
+        startCountDownTimer(
             durationInMillis = walkingDurationInMillis,
             countDown = walkingCountDown
         )
         // start
-        StartCountDownTimer(
-            durationInMillis = (joggingDurationInMillis * 0.2).toInt(),
+        text = "Jogging for"
+        startCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.2).roundToInt(),
             countDown = joggingCountDown
         )
         // peep
-        StartCountDownTimer(
+        text = "Pause for"
+        startCountDownTimer(
             durationInMillis = pauseDurationInMillis,
             countDown = pauseCountDown
         )
         // peep
-        StartCountDownTimer(
-            durationInMillis = (joggingDurationInMillis * 0.5).toInt(),
+        text = "Jogging for"
+        startCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.5).roundToInt(),
             countDown = joggingCountDown
         )
         // peep
-        StartCountDownTimer(
+        text = "Pause for"
+        startCountDownTimer(
             durationInMillis = (pauseDurationInMillis * 2),
             countDown = pauseCountDown
         )
         // peep
-        StartCountDownTimer(
-            durationInMillis = (joggingDurationInMillis * 0.3).toInt(),
+        text = "Jogging for"
+        startCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.3).roundToInt(),
             countDown = joggingCountDown
         )
         // peep
-        StartCountDownTimer(
+        text = "Pause for"
+        startCountDownTimer(
             durationInMillis = pauseDurationInMillis,
             countDown = pauseCountDown
         )
         // peep
-        StartCountDownTimer(
+        text = "Walking for"
+        startCountDownTimer(
             durationInMillis = walkingDurationInMillis,
             countDown = walkingCountDown
         )
     } else if (jogging.value > 10) {
-        StartCountDownTimer(
+        text = "Walking for"
+        startCountDownTimer(
             durationInMillis = walkingDurationInMillis,
             countDown = walkingCountDown
         )
         // start
-        StartCountDownTimer(
-            durationInMillis = (joggingDurationInMillis * 0.2).toInt(),
+        text = "Jogging for"
+        startCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.2).roundToInt(),
             countDown = joggingCountDown
         )
         // peep
-        StartCountDownTimer(durationInMillis = pauseDurationInMillis, countDown = pauseCountDown)
+        text = "Pause for"
+        startCountDownTimer(durationInMillis = pauseDurationInMillis, countDown = pauseCountDown)
         // peep
-        StartCountDownTimer(
-            durationInMillis = (joggingDurationInMillis * 0.5).toInt(),
+        text = "Jogging for"
+        startCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.5).roundToInt(),
             countDown = joggingCountDown
         )
         // peep
-        StartCountDownTimer(
+        text = "Pause for"
+        startCountDownTimer(
             durationInMillis = (pauseDurationInMillis * 2),
             countDown = pauseCountDown
         )
         // peep
-        StartCountDownTimer(
-            durationInMillis = (joggingDurationInMillis * 0.3).toInt(),
+        text = "Jogging for"
+        startCountDownTimer(
+            durationInMillis = (joggingDurationInMillis * 0.3).roundToInt(),
             countDown = joggingCountDown
         )
         // peep
-        StartCountDownTimer(durationInMillis = pauseDurationInMillis, countDown = pauseCountDown)
+        text = "Pause for"
+        startCountDownTimer(durationInMillis = pauseDurationInMillis, countDown = pauseCountDown)
         // peep
-        StartCountDownTimer(
+        text = "Walking for"
+        startCountDownTimer(
             durationInMillis = walkingDurationInMillis,
             countDown = walkingCountDown
         )
         // finish
     } else {
-        StartCountDownTimer(
+        text = "Walking for"
+        startCountDownTimer(
             durationInMillis = walkingDurationInMillis,
             countDown = walkingCountDown
         )
         // start
         repeat(5) {
-            StartCountDownTimer(
-                durationInMillis = (joggingDurationInMillis * 0.2).toInt(),
+            text = "Jogging for"
+            startCountDownTimer(
+                durationInMillis = (joggingDurationInMillis * 0.2).roundToInt(),
                 countDown = joggingCountDown
             )
 
             // peep
-            StartCountDownTimer(
+            text = "Pause for"
+            startCountDownTimer(
                 durationInMillis = pauseDurationInMillis,
                 countDown = pauseCountDown
             )
             // peep
         }
-        StartCountDownTimer(
+        text = "Walking for"
+        startCountDownTimer(
             durationInMillis = walkingDurationInMillis,
             countDown = walkingCountDown
         )
@@ -154,7 +175,7 @@ fun ExerciseScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Jogging for",
+            text = text,
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.ExtraBold
         )
@@ -181,7 +202,7 @@ private fun getDurationInMillis(duration: MutableState<Int>): Int {
 }
 
 @Composable
-private fun StartCountDownTimer(
+private fun startCountDownTimer(
     durationInMillis: Int,
     countDown: MutableState<Int>,
 ): MutableState<Int> {
@@ -192,7 +213,6 @@ private fun StartCountDownTimer(
             }
 
             override fun onFinish() {
-
             }
         }
 
