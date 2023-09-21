@@ -1,4 +1,4 @@
-package com.commcode.joggingapp.screen
+package com.commcode.joggingapp.ui
 
 import android.os.CountDownTimer
 import androidx.compose.foundation.layout.Arrangement

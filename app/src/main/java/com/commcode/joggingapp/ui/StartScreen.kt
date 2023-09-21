@@ -1,4 +1,4 @@
-package com.commcode.joggingapp.screen
+package com.commcode.joggingapp.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

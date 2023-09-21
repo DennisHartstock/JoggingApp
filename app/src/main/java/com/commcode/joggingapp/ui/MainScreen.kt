@@ -1,4 +1,4 @@
-package com.commcode.joggingapp.screen
+package com.commcode.joggingapp.ui
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
