@@ -1,5 +1,6 @@
 package com.commcode.joggingapp.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ fun MainScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
     }
 
     Surface(
-        modifier = modifier,
+        modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         if (shouldShowExerciseScreen) {

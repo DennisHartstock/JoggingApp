@@ -4,12 +4,15 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.commcode.joggingapp.ui.MainScreen
+import com.commcode.joggingapp.ui.UserCard
 import com.commcode.joggingapp.ui.theme.JoggingAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +21,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JoggingAppTheme {
-                MainScreen(modifier = Modifier.fillMaxSize(), joggingUnit = JoggingUnit(3, 5, 1))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = MaterialTheme.colorScheme.background)
+                ) {
+                    UserCard()
+                    MainScreen(joggingUnit = JoggingUnit(3, 5, 1))
+                }
             }
         }
     }
@@ -26,12 +36,15 @@ class MainActivity : ComponentActivity() {
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, name = "Dark Mode")
-
-@Preview(showBackground = true)
 @Composable
 fun JoggingPreview() {
     JoggingAppTheme {
-        Surface {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background)
+        ) {
+            UserCard()
             MainScreen(joggingUnit = JoggingUnit(3, 5, 1))
         }
     }
