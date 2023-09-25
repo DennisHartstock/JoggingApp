@@ -17,6 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.commcode.joggingapp.ui.theme.JoggingAppTheme
@@ -51,35 +53,34 @@ fun UserCard() {
                 ) {
                     Text(text = "Image", color = MaterialTheme.colorScheme.onPrimary)
                 }
-                TwoBoxes()
-                TwoBoxes()
-                TwoBoxes()
+                UserStats("Name", "John")
+                UserStats("Total Distance", "100 km")
+                UserStats("Average Speed", "8 km/h")
             }
         }
     }
 }
 
 @Composable
-private fun TwoBoxes() {
+private fun UserStats(
+    title: String,
+    value: String,
+) {
     Column(
         modifier = Modifier
             .height(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Box(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.secondary)
-                .height(30.dp)
-        ) {
-            Text(text = "Box1", color = MaterialTheme.colorScheme.onSecondary)
-        }
-        Box(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.secondary)
-                .height(30.dp)
-        ) {
-            Text(text = "Box2", color = MaterialTheme.colorScheme.onSecondary)
-        }
+        Text(
+            text = title,
+            color = MaterialTheme.colorScheme.primary,
+            fontStyle = FontStyle.Italic
+        )
+        Text(
+            text = value,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.ExtraBold
+        )
     }
 }
