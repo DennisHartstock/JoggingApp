@@ -38,38 +38,63 @@ fun ExerciseScreen(
         mutableStateOf(pauseDurationInMillis)
     }
 
-    var isFinished = false
-    Walking(
-        modifier = modifier,
-        walkingDurationInMillis = walkingDurationInMillis,
-        walkingCountDown = walkingCountDown
-    )
+    var isFinished = true
 
-    if (walkingCountDown.value == 0) {
-        isFinished = true
-    }
-
-    if (isFinished) {
-        Jogging(
+    if (ExerciseStep(
             modifier = modifier,
-            joggingDurationInMillis = joggingDurationInMillis,
-            joggingCountDown = joggingCountDown
+            text = "Walking",
+            durationInMillis = walkingDurationInMillis,
+            countDown = walkingCountDown
         )
-        isFinished = false
+    ) {
+        if (ExerciseStep(
+                modifier = modifier,
+                text = "Jogging",
+                durationInMillis = joggingDurationInMillis,
+                countDown = joggingCountDown
+            )
+        ) {
+            ExerciseStep(
+                modifier = modifier,
+                text = "Pause",
+                durationInMillis = pauseDurationInMillis,
+                countDown = pauseCountDown
+            )
+        }
     }
 
-    if (joggingCountDown.value == 0) {
-        isFinished = true
-    }
 
-    if (isFinished) {
-        Pause(
-            modifier = modifier,
-            pauseDurationInMillis = pauseDurationInMillis,
-            pauseCountDown = pauseCountDown
-        )
-        isFinished = false
-    }
+//    Walking(
+//        modifier = modifier,
+//        walkingDurationInMillis = walkingDurationInMillis,
+//        walkingCountDown = walkingCountDown
+//    )
+//
+//    if (walkingCountDown.value == 0) {
+//        isFinished = true
+//    }
+//
+//    if (isFinished) {
+//        Jogging(
+//            modifier = modifier,
+//            joggingDurationInMillis = joggingDurationInMillis,
+//            joggingCountDown = joggingCountDown
+//        )
+//        isFinished = false
+//    }
+//
+//    if (joggingCountDown.value == 0) {
+//        isFinished = true
+//    }
+//
+//    if (isFinished) {
+//        Pause(
+//            modifier = modifier,
+//            pauseDurationInMillis = pauseDurationInMillis,
+//            pauseCountDown = pauseCountDown
+//        )
+//        isFinished = false
+//    }
 
 //    val durationInMillis: Int = getDurationInMillis()
 
@@ -241,7 +266,12 @@ fun ExerciseScreen(
 }
 
 @Composable
-fun Walking(modifier: Modifier, walkingDurationInMillis: Int, walkingCountDown: MutableState<Int>) {
+fun ExerciseStep(
+    modifier: Modifier,
+    text: String,
+    durationInMillis: Int,
+    countDown: MutableState<Int>,
+): Boolean {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
@@ -249,7 +279,7 @@ fun Walking(modifier: Modifier, walkingDurationInMillis: Int, walkingCountDown: 
     ) {
 
         Text(
-            text = "Walking for",
+            text = "$text for",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.ExtraBold
         )
@@ -257,8 +287,8 @@ fun Walking(modifier: Modifier, walkingDurationInMillis: Int, walkingCountDown: 
 
         val countDown =
             startCountDownTimer(
-                durationInMillis = walkingDurationInMillis,
-                countDown = walkingCountDown
+                durationInMillis = durationInMillis,
+                countDown = countDown
             )
 
         Text(
@@ -266,63 +296,7 @@ fun Walking(modifier: Modifier, walkingDurationInMillis: Int, walkingCountDown: 
             style = MaterialTheme.typography.headlineLarge
         )
     }
-}
-
-@Composable
-fun Jogging(modifier: Modifier, joggingDurationInMillis: Int, joggingCountDown: MutableState<Int>) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Jogging for",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.ExtraBold
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        val countDown =
-            startCountDownTimer(
-                durationInMillis = joggingDurationInMillis,
-                countDown = joggingCountDown
-            )
-
-        Text(
-            text = "${countDown.value / 1000}",
-            style = MaterialTheme.typography.headlineLarge
-        )
-    }
-}
-
-@Composable
-fun Pause(modifier: Modifier, pauseDurationInMillis: Int, pauseCountDown: MutableState<Int>) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Walking for",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.ExtraBold
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        val countDown =
-            startCountDownTimer(
-                durationInMillis = pauseDurationInMillis,
-                countDown = pauseCountDown
-            )
-
-        Text(
-            text = "${countDown.value / 1000}",
-//            text = "$countDownTimer",
-            style = MaterialTheme.typography.headlineLarge
-        )
-    }
+    return countDown.value == 0
 }
 
 private fun getDurationInMillis(duration: MutableState<Int>): Int {

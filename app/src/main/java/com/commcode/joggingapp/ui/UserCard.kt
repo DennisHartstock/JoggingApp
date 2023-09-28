@@ -42,7 +42,7 @@ fun UserCard() {
                 .background(color = MaterialTheme.colorScheme.background)
                 .padding(4.dp)
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(50.dp),
             border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.onBackground)
         ) {
             Row(
@@ -82,7 +82,7 @@ private fun UserStats(
 ) {
     Column(
         modifier = Modifier
-            .height(100.dp),
+            .height(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {

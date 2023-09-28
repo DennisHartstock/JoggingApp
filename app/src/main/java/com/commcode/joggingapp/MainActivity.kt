@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                         .background(color = MaterialTheme.colorScheme.background)
                 ) {
                     UserCard()
-                    MainScreen(joggingUnit = JoggingUnit(3, 5, 1))
+                    MainScreen(joggingUnit = JoggingUnit(1, 1, 1))
                 }
             }
         }

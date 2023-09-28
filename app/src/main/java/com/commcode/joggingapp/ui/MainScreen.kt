@@ -34,7 +34,12 @@ fun MainScreen(modifier: Modifier = Modifier, joggingUnit: JoggingUnit) {
                 jogging = jogging
             )
         } else {
-            ExerciseScreen(modifier = modifier, walking = walking, jogging = jogging, pause = pause)
+            ExerciseScreen(
+                modifier = modifier,
+                walking = walking,
+                jogging = jogging,
+                pause = pause
+            )
         }
     }
 }
